@@ -34,7 +34,7 @@ const _layout = () => {
             options={{
               tabBarLabel :'Trips',
               tabBarIcon:({color,size}) =>
-                  <FontAwesome5 name='plane' color={color} size={size}/>
+                  <MaterialCommunityIcons name='airplane' color={color} size={size}/>
       }}/>
        <Tabs.Screen
             name ='inbox'

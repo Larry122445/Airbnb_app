@@ -45,7 +45,7 @@ const Page = () => {
 
   return (
     <View style={styles.container}>
-      <TextInput autoCapitalize='none' placeholder='Email' style={[defaultStyles.inputField,{marginBottom:30}]}/>
+      <TextInput autoCapitalize='none'  placeholder="Email" style={[defaultStyles.inputField,{marginBottom:30}]}/>
       <TouchableOpacity style={defaultStyles.btn}>
         <Text style={defaultStyles.btnText}>Continue</Text>
       </TouchableOpacity>
