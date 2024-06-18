@@ -5,37 +5,27 @@ import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { Link } from 'expo-router';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const categories = [
-  {
-    name: 'Tiny homes',
-    icon: 'home',
-  },
-  {
-    name: 'Cabins',
-    icon: 'house-siding',
-  },
   {
     name: 'Trending',
     icon: 'local-fire-department',
   },
   {
-    name: 'Play',
-    icon: 'videogame-asset',
+    name: 'Homestels',
+    icon: 'home',
   },
   {
-    name: 'City',
+    name: 'Hostels',
     icon: 'apartment',
   },
   {
-    name: 'Beachfront',
-    icon: 'beach-access',
-  },
-  {
-    name: 'Countryside',
-    icon: 'nature-people',
+    name: 'Campus',
+    icon: 'school',
   },
 ];
+
 
 interface Props {
   onCategoryChanged: (category: string) => void;
@@ -59,6 +49,13 @@ const ExploreHeader = ({ onCategoryChanged }: Props) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={styles.container}>
+      <View>
+          <Text style={{ fontFamily: 'mon-b',
+            padding: 5,textAlign:'center'
+          }}>
+            KWAME NKRUMAH UNIVERSITY OF SCIENCE & TECHNOLOGY
+          </Text>
+        </View>
         <View style={styles.actionRow}>
           <Link href={'/(modals)/booking'} asChild>
             <TouchableOpacity>
@@ -75,33 +72,36 @@ const ExploreHeader = ({ onCategoryChanged }: Props) => {
             <Ionicons name="options-outline" size={24} />
           </TouchableOpacity>
         </View>
-
+        
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <ScrollView
-          horizontal
           ref={scrollRef}
+          horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             alignItems: 'center',
-            gap: 20,
-            paddingHorizontal: 16,
+            gap: 40,
+            paddingHorizontal: 25,
           }}>
           {categories.map((item, index) => (
             <TouchableOpacity
-              ref={(el) => (itemsRef.current[index] = el)}
+              onPress={() => selectCategory(index)}
               key={index}
+              ref={(el) => itemsRef.current[index] = el}
               style={activeIndex === index ? styles.categoriesBtnActive : styles.categoriesBtn}
-              onPress={() => selectCategory(index)}>
+              >
               <MaterialIcons
                 name={item.icon as any}
-                size={24}
+                size={23}
                 color={activeIndex === index ? '#000' : Colors.grey}
               />
-              <Text style={activeIndex === index ? styles.categoryTextActive : styles.categoryText}>
+              <Text style={activeIndex === index ? styles.categoryTextActive : styles.categoryText} >
                 {item.name}
               </Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
+        </GestureHandlerRootView>
       </View>
     </SafeAreaView>
   );
@@ -110,7 +110,7 @@ const ExploreHeader = ({ onCategoryChanged }: Props) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    height: 130,
+    height: 173,
     elevation: 2,
     shadowColor: '#000',
     shadowOpacity: 0.1,

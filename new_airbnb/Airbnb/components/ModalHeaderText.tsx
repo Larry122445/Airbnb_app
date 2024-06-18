@@ -12,22 +12,12 @@ const ModalHeaderText = () => {
             fontFamily: 'mon-sb',
             fontSize: 18,
             color: active == 0 ? '#000' : Colors.grey,
-            textDecorationLine: active == 0 ? 'underline' : 'none',
+           
           }}>
           Stays
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setActive(1)}>
-        <Text
-          style={{
-            fontFamily: 'mon-sb',
-            fontSize: 18,
-            color: active == 1 ? '#000' : Colors.grey,
-            textDecorationLine: active == 1 ? 'underline' : 'none',
-          }}>
-          Experiences
-        </Text>
-      </TouchableOpacity>
+      
     </View>
   );
 };
