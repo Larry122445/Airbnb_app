@@ -8,7 +8,6 @@ import Animated, {
   SlideInDown,
   interpolate,
   useAnimatedRef,
-  useAnimatedScrollHandler,
   useAnimatedStyle,
   useScrollViewOffset,
 } from 'react-native-reanimated';
@@ -68,12 +67,12 @@ const DetailsPage = () => {
         {
           translateY: interpolate(
             scrollOffset.value,
-            [0, IMG_HEIGHT],
-            [0, -IMG_HEIGHT / 2]
+            [-IMG_HEIGHT, 0, IMG_HEIGHT, IMG_HEIGHT],
+            [-IMG_HEIGHT / 2, 0, IMG_HEIGHT * 0.75]
           ),
         },
         {
-          scale: interpolate(scrollOffset.value, [0, IMG_HEIGHT], [1, 1.1]),
+          scale: interpolate(scrollOffset.value, [-IMG_HEIGHT, 0, IMG_HEIGHT], [2, 1, 1]),
         },
       ],
     };
@@ -81,24 +80,16 @@ const DetailsPage = () => {
 
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(scrollOffset.value, [IMG_HEIGHT / 2, IMG_HEIGHT], [0, 1]),
+      opacity: interpolate(scrollOffset.value, [0, IMG_HEIGHT / 1.5], [0, 1]),
     };
   }, []);
-
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      scrollOffset.value = event.contentOffset.y;
-    },
-  });
 
   return (
     <View style={styles.container}>
       <Animated.ScrollView
-        onScroll={scrollHandler}
         contentContainerStyle={{ paddingBottom: 100 }}
         ref={scrollRef}
-        scrollEventThrottle={16}
-      >
+        scrollEventThrottle={16}>
         <Animated.Image
           source={{ uri: listing.xl_picture_url }}
           style={[styles.image, imageAnimatedStyle]}
@@ -138,7 +129,8 @@ const DetailsPage = () => {
       </Animated.ScrollView>
 
       <Animated.View style={defaultStyles.footer} entering={SlideInDown.delay(200)}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <View
+          style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <TouchableOpacity style={styles.footerText}>
             <Text style={styles.footerPrice}>€{listing.price}</Text>
             <Text>night</Text>
