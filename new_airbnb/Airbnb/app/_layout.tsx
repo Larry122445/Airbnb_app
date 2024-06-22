@@ -11,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 import * as SecureStore from 'expo-secure-store';
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
-
+import settings from './(modals)/settings';
 
 const CLERK_PUBLISHABLE_KEY = 'pk_test_bG92ZWQtZWxmLTMxLmNsZXJrLmFjY291bnRzLmRldiQ';
 
@@ -32,15 +32,10 @@ const tokenCache = {
   },
 };
 
-
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-
-
-
-  
   const [loaded, error] = useFonts({
     mon: require('../assets/fonts/Montserrat-Regular.ttf'),
     'mon-sb': require('../assets/fonts/Montserrat-SemiBold.ttf'),
@@ -57,15 +52,12 @@ export default function RootLayout() {
     return null;
   }
 
-
-
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY!} tokenCache={tokenCache}>
       <RootLayoutNav />
     </ClerkProvider>
   );
 }
-
 
 function RootLayoutNav() {
   const { isLoaded, isSignedIn } = useAuth();
@@ -76,11 +68,9 @@ function RootLayoutNav() {
     }
   }, [isLoaded]);
 
-
   return (
-   
-      <Stack>
-        <Stack.Screen
+    <Stack>
+      <Stack.Screen
         name="(modals)/Login"
         options={{
           presentation: 'modal',
@@ -95,16 +85,15 @@ function RootLayoutNav() {
           ),
         }}
       />
-      
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-       <Stack.Screen name="listing/[id]" options={{ headerTitle: '' }} />
+      <Stack.Screen name="listing/[id]" options={{ headerTitle: '' }} />
       <Stack.Screen
         name="(modals)/booking"
         options={{
           presentation: 'transparentModal',
           animation: 'fade',
           headerTransparent: true,
-          headerTitle: (props) => < ModalHeaderText />,
+          headerTitle: (props) => <ModalHeaderText />,
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => router.back()}
@@ -120,9 +109,20 @@ function RootLayoutNav() {
           ),
         }}
       />
-      </Stack>
-   
+      <Stack.Screen
+        name="(modals)/settings"
+        options={{
+          title: 'Settings',
+          headerTitleStyle: {
+            fontFamily: 'mon-sb',
+          },
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Ionicons name="arrow-back-outline" size={28} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+    </Stack>
   );
 }
-
-

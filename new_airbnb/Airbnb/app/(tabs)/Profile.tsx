@@ -1,3 +1,4 @@
+import React, { useEffect, useState, useRef, forwardRef } from 'react';
 import {
   View,
   Text,
@@ -8,31 +9,32 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
 import { useAuth, useUser } from '@clerk/clerk-expo';
-import { defaultStyles } from '@/constants/styles';
-import { Ionicons } from '@expo/vector-icons';
-import Colors from '@/constants/Colors';
-import { Link } from 'expo-router';
+import { EvilIcons, Ionicons } from '@expo/vector-icons';
+import Colors from '@/constants/Colors'; // Assuming this is correctly imported
 import * as ImagePicker from 'expo-image-picker';
+import { Link, router } from 'expo-router'; // Import the router from expo-router
+import { defaultStyles } from '@/constants/styles';
 
-const Page = () => {
+// Wrapping the Page component with forwardRef
+const Page = forwardRef((props, ref) => {
   const { signOut, isSignedIn } = useAuth();
   const { user } = useUser();
   const [firstName, setFirstName] = useState(user?.firstName);
   const [lastName, setLastName] = useState(user?.lastName);
-  const [email, setEmail] = useState(user?.emailAddresses[0].emailAddress);
+  const [email, setEmail] = useState(user?.emailAddresses[0]?.emailAddress); // Added safe navigation here
   const [edit, setEdit] = useState(false);
 
-  // Load user data on mount
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
+  // Ref for the TextInput
+  const inputRef = useRef(null);
 
-    setFirstName(user.firstName);
-    setLastName(user.lastName);
-    setEmail(user.emailAddresses[0].emailAddress);
+  // Load user data on mount and update on user change
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+      setEmail(user.emailAddresses[0]?.emailAddress); // Added safe navigation here
+    }
   }, [user]);
 
   // Update Clerk user data
@@ -71,7 +73,9 @@ const Page = () => {
     <SafeAreaView style={defaultStyles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Profile</Text>
-        <Ionicons name="notifications-outline" size={26} />
+        <TouchableOpacity onPress={() => router.push('(modals)/settings')}>
+          <Ionicons name="settings-outline" size={26} />
+        </TouchableOpacity>
       </View>
 
       {user && (
@@ -93,6 +97,7 @@ const Page = () => {
             {edit && (
               <View style={styles.editRow}>
                 <TextInput
+                  ref={inputRef}
                   placeholder="First Name"
                   value={firstName || ''}
                   onChangeText={setFirstName}
@@ -117,13 +122,19 @@ const Page = () => {
 
       {isSignedIn && <Button title="Log Out" onPress={() => signOut()} />}
       {!isSignedIn && (
-        <Link href={'/(modals)/login'} asChild>
-          <Button title="Log In"/>
+        <Link href={'/(modals)/Login'} asChild>
+          <Button title="Log In" />
         </Link>
       )}
+      <View style={styles.viewstyle}>
+        <TouchableOpacity style={defaultStyles.btn}>
+          <Ionicons name='person' size={30} style={styles.btnicon} />
+          <Text style={defaultStyles.btnText}> LOG IN AS HOST</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
-};
+});
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -165,6 +176,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
+  },
+  btnOutlineText: {
+    color: '#000',
+    fontSize: 16,
+    fontFamily: 'mon-sb',
+    alignSelf: 'center',
+  },
+  btnOutline: {
+    backgroundColor: '#11c3c3',
+    borderWidth: 1,
+    borderColor: Colors.grey,
+    height: 50,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+  },
+  viewstyle: {
+    paddingTop: 30,
+    padding: 50,
+  },
+  btnicon: {
+    position: 'absolute',
+    left: 16,
+    color: '#fff',
   },
 });
 

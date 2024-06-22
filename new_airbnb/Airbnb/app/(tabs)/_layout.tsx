@@ -25,15 +25,16 @@ const Layout = () => {
       }} />
        <Tabs.Screen name='bookings' options={{
         tabBarLabel: 'Bookings',
-        tabBarIcon: ({ color, size }) => (
-          <EvilIcons name='heart' color={color} size={35}/>
-        ),
-      }} />
-      <Tabs.Screen name='bookmarks' options={{
-        tabBarLabel: 'Bookmarks',
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
-          <Ionicons name='bookmarks-outline' color={color} size={27}/>
+          <Ionicons name='checkmark-circle-outline' color={color} size={32}/>
+        ),
+      }} />
+      <Tabs.Screen name='Wishlist' options={{
+        tabBarLabel: 'Wishlist',
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <EvilIcons name='heart' color={color} size={35}/>
         ),
       }} />
        <Tabs.Screen name='profile' options={{
@@ -43,13 +44,7 @@ const Layout = () => {
           <EvilIcons name='user' color={color} size={36}/>
         ),
       }} />
-      <Tabs.Screen name='settings' options={{
-        tabBarLabel: 'Settings',
-        headerShown: false,
-        tabBarIcon: ({ color, size }) => (
-          <MaterialIcons name="settings" size={24} color={color} />
-        ),
-      }} />
+      
     </Tabs>
   );
 };

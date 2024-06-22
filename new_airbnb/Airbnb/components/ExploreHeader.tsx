@@ -104,6 +104,7 @@ const ExploreHeader = ({ onCategoryChanged }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
+    
     backgroundColor: '#fff',
     paddingTop: 5,
     height: 173,
